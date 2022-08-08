@@ -14,5 +14,14 @@ export const AccountManager = ({
     const nextDate = await giftManager.workingRoutine();
     return nextDate;
   };
-  return { doJob };
+  const start = async () => {
+    try {
+      const nextDate = await doJob();
+      //schedule start function at nextDate
+    } catch (e) {
+      console.log(e);
+      //schedule start function in the next 10 minutes
+    }
+  };
+  return { start };
 };
