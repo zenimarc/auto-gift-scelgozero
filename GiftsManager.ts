@@ -8,7 +8,7 @@ import {
 } from "./types/availableGiftsResp";
 import { genGiftResp } from "./types/generateGiftResp";
 
-const giftsManager = (authToken: string) => {
+export const GiftsManager = (authToken: string) => {
   const headers = {
     Cookie: "fileToken=" + authToken,
     authToken: authToken,
@@ -134,10 +134,5 @@ const giftsManager = (authToken: string) => {
     return nextRoutineDate;
   };
 
-  const scheduler = async () => {
-    const nextDate = await workingRoutine();
-    schedule.scheduleJob(nextDate, scheduler);
-  };
-
-  return { getAvailableGifts, handleAvailableGifts };
+  return { workingRoutine };
 };
