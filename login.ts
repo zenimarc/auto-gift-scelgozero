@@ -1,4 +1,5 @@
 import axios from "axios";
+import { loginResp } from "./types/loginResp";
 const loginApi = "https://io.scelgozero.it/api/auth/login";
 export const zeroLogin = async ({
   username,
@@ -7,8 +8,9 @@ export const zeroLogin = async ({
   username: string;
   password: string;
 }) => {
-  const resp = await axios.post(loginApi, {
+  const resp: loginResp = await axios.post(loginApi, {
     username,
     password,
   });
+  return resp.response.body.token;
 };
