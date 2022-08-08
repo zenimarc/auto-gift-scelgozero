@@ -8,9 +8,11 @@ export const zeroLogin = async ({
   username: string;
   password: string;
 }) => {
-  const resp: loginResp = await axios.post(loginApi, {
-    username,
-    password,
-  });
+  const resp: loginResp = (
+    await axios.post(loginApi, {
+      username,
+      password,
+    })
+  ).data;
   return resp.response.body.token;
 };

@@ -4,9 +4,9 @@ import { GiftsManager } from "./GiftsManager";
 
 import { zeroLogin } from "./login";
 
-(async () => {
+export const startScheduler = async () => {
   for (const account of accounts) {
     const { username, password } = account;
-    AccountManager({ username, password }).start();
+    await AccountManager({ username, password }).start();
   }
-})();
+};

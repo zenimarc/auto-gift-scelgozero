@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import schedule from "node-schedule";
 
 import {
@@ -28,6 +28,7 @@ export const GiftsManager = (authToken: string) => {
       throw new Error("Impossible to get available gifts");
     }
     const availableGifts = data.response.body;
+    console.log("Available gifts:", availableGifts);
     return availableGifts;
   };
 
@@ -60,8 +61,10 @@ export const GiftsManager = (authToken: string) => {
           }
           // the only gift remaining is locked
           // trying to generate a new one
-          const resp = await _createNewGift();
-          if (resp.response.code !== 200) {
+          try {
+            const resp = await _createNewGift();
+            return false; // in case I can create a new gift return false to tell we're not done
+          } catch (e) {
             // not able to generate a new gift, thus only one locked remaining -> finished
             if (!gift.activeAt) {
               throw new Error(
@@ -95,6 +98,7 @@ export const GiftsManager = (authToken: string) => {
     const resp = await axios.patch(patchApiEndpoint + gift.id, data, {
       headers: headers,
     });
+    console.log("aperto gift", gift.id);
   };
 
   const _unlockGift = async (gift: AvailableGiftsBodyEntity) => {
@@ -103,6 +107,7 @@ export const GiftsManager = (authToken: string) => {
     const resp = await axios.patch(patchApiEndpoint + gift.id, data, {
       headers: headers,
     });
+    console.log("sbloccato new gift", gift.id);
   };
 
   const _activateGift = async (gift: AvailableGiftsBodyEntity) => {
@@ -111,26 +116,29 @@ export const GiftsManager = (authToken: string) => {
     const resp = await axios.patch(patchApiEndpoint + gift.id, data, {
       headers: headers,
     });
+    console.log("gift attivato", gift.id);
     return resp;
   };
 
   const _createNewGift = async () => {
     //after having redeemed a gift, you need to create a new one which will still need to be activated
     const url = "https://io.scelgozero.it/api/rest/v1/own/gift";
-    const resp: genGiftResp = await axios.post(url, {}, { headers: headers });
+    const resp: genGiftResp = await axios.post(url, "", { headers: headers });
     return resp;
   };
 
   // do the routing to open gifts and return the date when this function need to be called again
   const workingRoutine = async () => {
-    const offsetAfterCountdownExpire = 1000 * 60 * 2; // milliseconds
+    const offsetAfterCountdownExpire = 1000 * 60 * 1; // in milliseconds (1 minute)
     let gifts = await getAvailableGifts();
-    let handleOutput = await handleAvailableGifts(gifts);
-    while (handleOutput === false) {
+    let finishedHandling = await handleAvailableGifts(gifts);
+    while (finishedHandling === false) {
       gifts = await getAvailableGifts();
-      handleOutput = await handleAvailableGifts(gifts);
+      finishedHandling = await handleAvailableGifts(gifts);
     }
-    const nextRoutineDate = new Date(handleOutput + offsetAfterCountdownExpire);
+    const nextRoutineDate = new Date(
+      finishedHandling + offsetAfterCountdownExpire
+    );
     return nextRoutineDate;
   };
 
