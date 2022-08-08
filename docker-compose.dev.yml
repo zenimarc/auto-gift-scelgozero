@@ -1,0 +1,10 @@
+version: '3.4'
+services:
+  worker:
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./:usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start

@@ -79,7 +79,7 @@ export const GiftsManager = (authToken: string) => {
       }
     }
     // if I arrive here there's something wrong
-    // because all the cases arew covered
+    // because all the cases are covered
     throw new Error("Generic error in handling gifts");
   };
 

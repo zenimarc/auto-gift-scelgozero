@@ -1,0 +1,7 @@
+version: '3.4'
+services:
+  worker:
+    build:
+      context: .
+      target: production
+
