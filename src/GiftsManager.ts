@@ -135,7 +135,7 @@ export const GiftsManager = (authToken: string, testimonialId: number) => {
   };
 
   const _testimonial = async () => {
-    //to get currrent status and maybe 100xp benvenuto
+    //not sure
     const url =
       "https://io.scelgozero.it/api/rest/gw/testimonial/" +
       String(testimonialId);
