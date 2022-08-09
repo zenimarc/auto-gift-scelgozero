@@ -57,7 +57,7 @@ export const GiftsManager = (authToken: string, testimonialId: number) => {
         } else {
           if (availableGifts.length > 1) {
             // there's still other gifts to process
-            return false;
+            continue;
           }
           // the only gift remaining is locked
           // trying to generate a new one
