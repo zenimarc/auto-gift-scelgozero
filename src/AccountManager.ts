@@ -28,18 +28,18 @@ export const AccountManager = ({
       schedule.scheduleJob(nextDate, start);
     } catch (e) {
       //console.log(e);
-      retrial && console.log("è già fallito", retrial, "volte");
       retrial += 1;
+      retrial && console.log("è già fallito", retrial, "volte");
       if (retrial > 10) {
         console.error("troppi retrial", username, "non verrà più effettuato");
+      } else {
+        //schedule start function in the next 10 minutes
+        const nextRetrialDate = new Date(new Date().getTime() + 1000 * 60 * 10); //10 minutes after now date
+        console.log(
+          `Errore di gift handling su ${username} \n RESCHEDULE DI PER LE ${nextRetrialDate.toLocaleString()}`
+        );
+        schedule.scheduleJob(nextRetrialDate, start);
       }
-
-      //schedule start function in the next 10 minutes
-      const nextRetrialDate = new Date(new Date().getTime() + 1000 * 60 * 10); //10 minutes after now date
-      console.log(
-        `Errore di gift handling su ${username} \n RESCHEDULE DI PER LE ${nextRetrialDate.toLocaleString()}`
-      );
-      schedule.scheduleJob(nextRetrialDate, start);
     }
   };
   return { start };
