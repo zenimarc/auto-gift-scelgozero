@@ -8,7 +8,7 @@ import {
 } from "./types/availableGiftsResp";
 import { genGiftResp } from "./types/generateGiftResp";
 
-export const GiftsManager = (authToken: string) => {
+export const GiftsManager = (authToken: string, testimonialId: number) => {
   const headers = {
     Cookie: "fileToken=" + authToken,
     authToken: authToken,
@@ -124,6 +124,22 @@ export const GiftsManager = (authToken: string) => {
     //after having redeemed a gift, you need to create a new one which will still need to be activated
     const url = "https://io.scelgozero.it/api/rest/v1/own/gift";
     const resp: genGiftResp = await axios.post(url, "", { headers: headers });
+    return resp;
+  };
+
+  const _getCurrent = async () => {
+    //to get currrent status and maybe 100xp benvenuto
+    const url = "https://io.scelgozero.it/api/rest/v1/own/level/current";
+    const resp: genGiftResp = await axios.get(url, { headers: headers });
+    return resp;
+  };
+
+  const _testimonial = async () => {
+    //to get currrent status and maybe 100xp benvenuto
+    const url =
+      "https://io.scelgozero.it/api/rest/gw/testimonial/" +
+      String(testimonialId);
+    const resp: genGiftResp = await axios.get(url, { headers: headers });
     return resp;
   };
 

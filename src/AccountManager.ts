@@ -1,5 +1,5 @@
 import { GiftsManager } from "./GiftsManager";
-import { zeroLogin } from "./login";
+import { LoginManager } from "./login";
 import schedule from "node-schedule";
 
 export const AccountManager = ({
@@ -12,11 +12,15 @@ export const AccountManager = ({
   let retrial = 0;
 
   const doAccountGiftHandling = async () => {
-    const authToken = await zeroLogin({ username, password });
-    const giftManager = GiftsManager(authToken.id);
+    const loginManager = await LoginManager({ username, password });
+    await loginManager.login();
+    const authToken = loginManager.getAuthToken();
+    const testimonialId = loginManager.getTestimonialId();
+    const giftManager = GiftsManager(authToken.id, testimonialId);
     const nextDate = await giftManager.workingRoutine();
     return nextDate;
   };
+
   const start = async () => {
     try {
       console.log("INIZIO HANDLING DI", username);

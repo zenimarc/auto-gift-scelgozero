@@ -1,5 +1,5 @@
 import accounts from "./accounts.json";
-import { zeroLogin } from "./login";
+import { LoginManager } from "./login";
 import { startScheduler } from "./scheduler";
 
 (async () => {

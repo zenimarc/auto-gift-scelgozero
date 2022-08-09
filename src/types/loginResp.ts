@@ -14,7 +14,7 @@ interface Body {
   token: Token;
   user: User;
 }
-interface Token {
+export interface Token {
   id: string;
   userId: number;
   createdAt: number;

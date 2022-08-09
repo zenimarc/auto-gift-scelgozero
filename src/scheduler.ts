@@ -2,7 +2,7 @@ import { AccountManager } from "./AccountManager";
 import accounts from "./accounts.json";
 import { GiftsManager } from "./GiftsManager";
 
-import { zeroLogin } from "./login";
+import { LoginManager } from "./login";
 
 export const startScheduler = async () => {
   for (const account of accounts) {
