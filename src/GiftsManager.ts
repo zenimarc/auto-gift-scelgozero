@@ -146,6 +146,7 @@ export const GiftsManager = (authToken: string, testimonialId: number) => {
   // do the routing to open gifts and return the date when this function need to be called again
   const workingRoutine = async () => {
     const offsetAfterCountdownExpire = 1000 * 60 * 1; // in milliseconds (1 minute)
+    await _getCurrent();
     let gifts = await getAvailableGifts();
     let finishedHandling = await handleAvailableGifts(gifts);
     while (finishedHandling === false) {
