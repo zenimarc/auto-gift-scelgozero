@@ -5,8 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.27.2",
-    "node-schedule": "^2.1.0",
-    "puppeteer": "^16.1.0"
+    "node-schedule": "^2.1.0"
   },
   "scripts": {
     "build": "rimraf ./out && tsc",
